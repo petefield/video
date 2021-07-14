@@ -1,32 +1,34 @@
 
+<div class="frame">
+
     <video id="ssvid" autoplay loop muted >
         <source src="./video.mp4" type="video/mp4" />
     </video>
 
-
-<div class="ledStrip">
-    <div id="led-0" class="led off "></div>
-    <div id="led-1" class="led off "></div>
-    <div id="led-2" class="led off "></div>
-    <div id="led-3" class="led off "></div>
-    <div id="led-4" class="led off "></div>
-    <div id="led-5" class="led off "></div>
-    <div id="led-6" class="led off "></div>
-    <div id="led-7" class="led off "></div>
-    <div id="led-8" class="led off "></div>
-    <div id="led-9" class="led off "></div>
 </div>
+
 
 <style>
 
     body{
         margin: 0;
+        overflow: hidden;
+
+    }
+
+    div.frame{
+        position: absolute;
+        top:0; left: 0;
+        width: 480px;
+        height: 800px;
+        border: 1px solid green;
     }
 
     video {
-        width: 100%;
-        height: 100%;
-        border: 1px solid blue;
+        position: absolute;
+        left: -20px;
+        width: 500px;
+        height: 800px;
         object-fit: cover;
         object-position: center center;
     }
@@ -83,19 +85,19 @@
             let evt = events.get(time);
 
             if (evt != null) {
-                setLights(evt);
+                // setLights(evt);
                 console.log(evt);
                 events.delete(time);
             }
         }
     }  
 
-    function setLights(evt){
-        for (let i = 0; i < evt.length; i++) {
-            var led = document.getElementById(`led-${i}`);
-            led.classList.remove("on","off");
-            led.classList.add(evt[i] == 1 ? "on" : "off");
-        }
-    }
+    // function setLights(evt){
+    //     for (let i = 0; i < evt.length; i++) {
+    //         var led = document.getElementById(`led-${i}`);
+    //         led.classList.remove("on","off");
+    //         led.classList.add(evt[i] == 1 ? "on" : "off");
+    //     }
+    // }
 
 </script>
