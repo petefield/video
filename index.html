@@ -58,47 +58,66 @@
 </style>
 
 <script>
+
+    Number.prototype.round = function(places) {
+        return +(Math.round(this + "e+" + places)  + "e-" + places);
+    }
+
     var eventsDefinition = `[
-        [1,[0,1,0,0,0,0,0,0,0,0]],
-        [2,[0,0,0,1,0,1,0,0,0,0]],
-        [3,[0,0,0,0,0,0,0,1,0,0]],
-        [4,[0,1,0,0,0,1,0,0,0,0]],
-        [5,[0,0,0,1,0,0,0,0,0,0]],
-        [6,[0,0,1,1,0,1,0,1,0,0]],
-        [7,[0,0,0,0,0,0,0,1,0,0]],
-        [8,[1,1,1,1,1,1,1,1,1,1]]
+        ["1", [0,0,0,0,0,0]],
+        ["6", [1,1,1,1,1,1]],
+        ["7", [0,0,0,0,0,0]],
+        ["7.2", [1,0,1,0,0,1]],
+        ["7.5", [1,0,1,1,0,1]],
+        ["7.7", [1,1,1,1,1,1]]
     ]`;
 
     var ssvid = document.getElementById('ssvid');
 
     ssvid.addEventListener('timeupdate', function (e) {
-        vidHandler(Math.floor(ssvid.currentTime));
+        vidHandler(ssvid.currentTime.round(1));
     }, false);
 
     var events = new Map();
 
     function vidHandler(time) {
+        var t = time.toString();
 
-        if(time == 0 && events.size == 0){
+        console.log(t);
+
+        if(Math.floor(time) == 0 && events.size == 0){
+            console.log("Starting...");
             events = new Map(JSON.parse(eventsDefinition))
         }
         else{
-            let evt = events.get(time);
+            let evt = events.get(t);
 
             if (evt != null) {
-                // setLights(evt);
-                console.log(evt);
-                events.delete(time);
+                setLights(evt);
+                events.delete(t);
+            }else{
+                console.log("No Event");
             }
         }
     }  
 
-    // function setLights(evt){
-    //     for (let i = 0; i < evt.length; i++) {
-    //         var led = document.getElementById(`led-${i}`);
-    //         led.classList.remove("on","off");
-    //         led.classList.add(evt[i] == 1 ? "on" : "off");
-    //     }
-    // }
+    function setLights(evt){
+        
+        fetch('http://192.168.0.4:5050/led', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(evt.map((b, index) => ({id:index, brightness:b})))
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+    }
 
 </script>
