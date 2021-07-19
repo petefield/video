@@ -1,4 +1,69 @@
+<html>
 
+    <head>
+
+        <style>
+
+                  
+            label{
+                position: absolute;
+                top:0; left: 0;
+                z-index: 100;
+                background-color: white;
+                color: blue;
+                padding: 2px;
+                width: 35px;
+            }
+        
+
+            body{
+                margin: 0;
+                overflow: hidden;
+        
+            }
+        
+            div.frame{
+                position: absolute;
+                top:0; left: 0;
+                width: 480px;
+                height: 800px;
+                border: 1px solid green;
+                overflow: hidden;
+            }
+        
+            video {
+                position: absolute;
+                left: -40px;
+                width: 560px;
+                height: auto;
+                object-fit: cover;
+                object-position: center center;
+            }
+        
+            div.ledStrip {
+                display: none;
+                width: 100%;
+                height: 50px;
+            }
+            div.led {
+                float: left;
+                width: 10%;
+                height: 100%;
+            }
+        
+            div.led.on
+            {
+                background-color: red;
+            }
+        
+            div.led.off
+            {
+                background-color: white;
+            }
+        
+        </style>
+    </head>
+<body>
 <div class="frame">
 
     <video id="ssvid" autoplay loop muted >
@@ -7,56 +72,10 @@
 
 </div>
 
+<label id="timer">as</label>
 
-<style>
 
-    body{
-        margin: 0;
-        overflow: hidden;
-
-    }
-
-    div.frame{
-        position: absolute;
-        top:0; left: 0;
-        width: 480px;
-        height: 800px;
-        border: 1px solid green;
-        overflow: hidden;
-    }
-
-    video {
-        position: absolute;
-        left: -40px;
-        width: 560px;
-        height: auto;
-        object-fit: cover;
-        object-position: center center;
-    }
-
-    div.ledStrip {
-        display: none;
-        width: 100%;
-        height: 50px;
-    }
-    div.led {
-        float: left;
-        width: 10%;
-        height: 100%;
-    }
-
-    div.led.on
-    {
-        background-color: red;
-    }
-
-    div.led.off
-    {
-        background-color: white;
-    }
-
-</style>
-
+</body>
 <script>
 
     Number.prototype.round = function(places) {
@@ -84,6 +103,9 @@
         var t = time.toString();
 
         console.log(t);
+        var timer = document.getElementById('timer');
+        timer.innerText = t;
+
 
         if(Math.floor(time) == 0 && events.size == 0){
             console.log("Starting...");
@@ -121,3 +143,5 @@
     }
 
 </script>
+
+</html>
