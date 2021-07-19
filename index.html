@@ -1,69 +1,50 @@
 <html>
 
-    <head>
+<head>
 
-        <style>
-             
-            label{
-                position: absolute;
-                top:0; left: 0;
-                z-index: 100;
-                background-color: white;
-                color: blue;
-                padding: 2px;
-                right: 35px;
-            }
-            
-            label.error{
-                color: red;
-                top: 50px;
-                left: 0;
-                right: 0;
-                height: 200px;
-            }
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
 
-            body{
-                margin: 0;
-                overflow: hidden;
-            }
-        
-            div.frame{
-                position: absolute;
-                top:0; left: 0;
-                width: 480px;
-                height: 800px;
-                overflow: hidden;
-            }
-        
-            video {
-                position: absolute;
-                left: -40px;
-                width: 560px;
-                height: auto;
-                object-fit: cover;
-                object-position: center center;
-            }
+        div.frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 480px;
+            height: 800px;
+            overflow: hidden;
+        }
 
-        </style>
-    </head>
+        video {
+            position: absolute;
+            left: -40px;
+            width: 560px;
+            height: auto;
+            object-fit: cover;
+            object-position: center center;
+        }
+    </style>
+
+</head>
+
 <body>
-<div class="frame">
 
-    <video id="ssvid" autoplay loop muted >
-        <source src="./video.mp4" type="video/mp4" />
-    </video>
+    <div class="frame">
 
-</div>
+        <video id="ssvid" autoplay loop muted>
+            <source src="./video.mp4" type="video/mp4" />
+        </video>
 
-<label id="timer">as</label>
-
-<label class="error" id="error"></label>
+    </div>
 
 </body>
+
 <script>
 
-    Number.prototype.round = function(places) {
-        return +(Math.round(this + "e+" + places)  + "e-" + places);
+    Number.prototype.round = function (places) {
+        return +(Math.round(this + "e+" + places) + "e-" + places);
     }
 
     var eventsDefinition = `[
@@ -72,7 +53,10 @@
         ["7", [0,0,0,0,0,0]],
         ["7.2", [1,0,1,0,0,1]],
         ["7.5", [1,0,1,1,0,1]],
-        ["7.7", [1,1,1,1,1,1]]
+        ["7.7", [1,1,1,1,1,1]],
+        ["52.7", [0,0,0,0,0,1]],
+        ["54.7", [1,1,1,1,1,1]],
+        ["59.7", [0,0,0,0,0,1]],
     ]`;
 
     var ssvid = document.getElementById('ssvid');
@@ -91,31 +75,31 @@
         timer.innerText = t;
 
 
-        if(Math.floor(time) == 0 && events.size == 0){
+        if (Math.floor(time) == 0 && events.size == 0) {
             console.log("Starting...");
             events = new Map(JSON.parse(eventsDefinition))
         }
-        else{
+        else {
             let evt = events.get(t);
 
             if (evt != null) {
                 setLights(evt);
                 events.delete(t);
-            }else{
+            } else {
                 console.log("No Event");
             }
         }
-    }  
+    }
 
-    function setLights(evt){
-        
+    function setLights(evt) {
+
         fetch('http://192.168.0.4:5050/led', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(evt.map((b, index) => ({id:index, brightness:b})))
-            })
+            body: JSON.stringify(evt.map((b, index) => ({ id: index, brightness: b })))
+        })
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
