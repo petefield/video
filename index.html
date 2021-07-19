@@ -70,11 +70,6 @@
     function vidHandler(time) {
         var t = time.toString();
 
-        console.log(t);
-        var timer = document.getElementById('timer');
-        timer.innerText = t;
-
-
         if (Math.floor(time) == 0 && events.size == 0) {
             console.log("Starting...");
             events = new Map(JSON.parse(eventsDefinition))
